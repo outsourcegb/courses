@@ -5,3 +5,12 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+Course.destroy_all
+
+100.times.each do
+  Course.create!(
+    title: Faker::Educator.course_name,
+    description: Faker::Lorem.paragraph
+  )
+end

@@ -15,10 +15,12 @@
 require 'rails_helper'
 
 RSpec.describe Course, type: :model do
+  let!(:course) { create(:course) }
+
   describe 'validations' do
-    it { expect validate_presence_of(:title) }
-    it { expect validate_presence_of(:description) }
-    it { expect validate_uniqueness_of(:title) }
+    it { is_expected.to validate_presence_of(:title) }
+    it { is_expected.to validate_presence_of(:description) }
+    it { is_expected.to validate_uniqueness_of(:title) }
   end
 
   # describe 'associations' do

@@ -84,7 +84,7 @@ RSpec.describe "/courses", type: :request do
         expect(response_body["description"]).to eq(["can't be blank"])
       end
 
-      it "do not create new record if title is already taken" do
+      it "does not create new record if title is already taken" do
         another_course = create(:course, title: "Ruby on Rails", description: "Learn Ruby on Rails")
 
         post path, params: { course: { title: "Ruby on Rails", description: "Learn Ruby on Rails" } }

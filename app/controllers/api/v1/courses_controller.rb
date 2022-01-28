@@ -19,9 +19,16 @@ module Api
 
       # POST /courses
       def create
-        @course = Course.new(course_params)
+        author = User.find_by(id: params[:course][:author_id])
+        return render json: { author: ['not found'] }, status: :unprocessable_entity unless author
 
-        if @course.save
+        transaction = ActiveRecord::Base.transaction do
+          @course = Course.new(course_params)
+          @course.author = author
+          @course.save
+        end
+
+        if transaction
           render json: @course, status: :created
         else
           render json: @course.errors, status: :unprocessable_entity
@@ -40,6 +47,36 @@ module Api
       # DELETE /courses/1
       def destroy
         @course.destroy
+      end
+
+      # post /courses/1/enroll
+      def enroll
+        user = User.find_by(id: params[:talent_id])
+        return render json: { talent: ['not found'] }, status: :unprocessable_entity unless user
+
+        @course = Course.find(params[:course_id])
+        talent = CourseUser.new(course: @course, user: user, role: :talent)
+
+        if talent.save
+          render json: {}, status: :created
+        else
+          render json: talent.errors, status: :unprocessable_entity
+        end
+      end
+
+      # delete /courses/1/unenroll
+      def unenroll
+        user = User.find_by(id: params[:talent_id])
+        return render json: { talent: ['not found'] }, status: :unprocessable_entity unless user
+
+        @course = Course.find(params[:course_id])
+        talent = CourseUser.find_by(course: @course, user: user, role: :talent)
+
+        if talent.destroy
+          render json: {}, status: :ok
+        else
+          render json: talent.errors, status: :unprocessable_entity
+        end
       end
 
       private

@@ -23,9 +23,8 @@ RSpec.describe Course, type: :model do
     it { is_expected.to validate_uniqueness_of(:title) }
   end
 
-  # describe 'associations' do
-  #   it { should have_many(:course_users) }
-  #   it { should have_many(:users).through(:course_users) }
-  #   it { should have_many(:lessons) }
-  # end
+  describe 'associations' do
+    it { is_expected.to have_one(:author) }
+    it { is_expected.to have_many(:talents) }
+  end
 end

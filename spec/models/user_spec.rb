@@ -27,4 +27,10 @@ RSpec.describe User, type: :model do
     it { is_expected.to allow_value("someone@example.com").for(:email) }
     it { is_expected.not_to allow_value("invalid").for(:email) }
   end
+
+  describe 'associations' do
+    it { is_expected.to have_many(:course_users) }
+    it { is_expected.to have_many(:courses).through(:course_users) }
+    it { is_expected.to have_many(:enrollments).through(:course_users) }
+  end
 end

@@ -162,11 +162,27 @@ RSpec.describe '/users', type: :request do
   end
 
   describe "DELETE /destroy" do
+    let!(:users) { create_list(:user, 3) }
+    let!(:courses) { create_list(:course, 3) }
+
+    let!(:user_course1) { create(:course_user, user: users[0], course: courses[0], role: :author) }
+    let!(:user_course2) { create(:course_user, user: users[0], course: courses[1], role: :author) }
+    let!(:user_course3) { create(:course_user, user: users[1], course: courses[2], role: :author) }
+
     it "destroys the requested user" do
-      user = User.create! valid_attributes
-      expect {
-        delete "/api/v1/users/#{user.id}"
-      }.to change(User, :count).by(-1)
+      delete "/api/v1/users/#{users[0].id}"
+      expect(response).to have_http_status(:success)
+
+      expect(User.count).to eq(2)
+    end
+
+    it "transffers courses of author to other author" do
+      delete "/api/v1/users/#{users[0].id}"
+      expect(User.count).to eq(2)
+      user_course1.reload
+      user_course2.reload
+      expect(user_course1.user).to eq(users[1])
+      expect(user_course2.user).to eq(users[1])
     end
   end
 end

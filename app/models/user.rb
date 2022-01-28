@@ -18,4 +18,12 @@ class User < ApplicationRecord
   validates :email, :first_name, :last_name, presence: true
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }, if: :email?
   validates :email, uniqueness: true
+
+  has_many :course_users, dependent: :nullify
+  has_many :courses, -> { where(course_users: { role: :author }) }, through: :course_users, source: :course
+  has_many :enrollments, -> { where(course_users: { role: :talent }) }, through: :course_users, source: :course
+
+  def delete_enrollments
+    enrollments.destroy_all
+  end
 end

@@ -37,7 +37,26 @@ module Api
 
     # DELETE /users/1
       def destroy
-        @user.destroy
+        user_courses = @user.courses
+
+        if user_courses.empty?
+          @user.delete_enrollments
+
+          @user.destroy
+        else
+          ActiveRecord::Base.transaction do
+            # lets courses transfer to next user (we can pass id of next user)
+            other_user = User.where.not(id: @user.id).first
+
+            user_courses.each do |course|
+              course.author = other_user
+              course.save
+            end
+
+            @user.delete_enrollments
+            @user.destroy
+          end
+        end
       end
 
     private

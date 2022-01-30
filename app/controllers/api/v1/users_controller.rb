@@ -59,6 +59,22 @@ module Api
         end
       end
 
+    # GET /users/1/enrollments
+      def enrollments
+        @user = User.find(params[:user_id])
+        @courses = @user.enrollments
+
+        render json: @courses
+      end
+
+    # GET /users/1/courses
+      def courses
+        @user = User.find(params[:user_id])
+        @courses = @user.courses
+
+        render json: @courses
+      end
+
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_user

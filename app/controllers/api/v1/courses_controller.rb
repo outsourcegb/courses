@@ -64,7 +64,7 @@ module Api
         end
       end
 
-      # delete /courses/1/unenroll
+      # delete /courses/1/enroll
       def unenroll
         user = User.find_by(id: params[:talent_id])
         return render json: { talent: ['not found'] }, status: :unprocessable_entity unless user
@@ -77,6 +77,14 @@ module Api
         else
           render json: talent.errors, status: :unprocessable_entity
         end
+      end
+
+      # get /courses/1/talents
+      def talents
+        @course = Course.find(params[:course_id])
+        @talents = @course.talents
+
+        render json: @talents
       end
 
       private

@@ -208,8 +208,8 @@ RSpec.describe '/courses', type: :request do
     end
   end
 
-  describe 'DELETE /unenroll' do
-    let(:path) { "/api/v1/courses/#{course.id}/unenroll" }
+  describe 'DELETE /enroll' do
+    let(:path) { "/api/v1/courses/#{course.id}/enroll" }
 
     before do
       create(:course_user, course: course, user: user, role: :talent)

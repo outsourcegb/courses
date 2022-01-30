@@ -13,5 +13,5 @@
 #  index_courses_on_title  (title) UNIQUE
 #
 class CourseSerializer < ActiveModel::Serializer
-  attributes :title, :description
+  attributes :id, :title, :description
 end

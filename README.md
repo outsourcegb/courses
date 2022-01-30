@@ -1,24 +1,16 @@
-# README
+# Courses
+A test project
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Steps
+- clone the repository
+- bundle install
+- rails db:create db:migrate db:seed
+- rails s
+- open http://localhost:3000
 
-Things you may want to cover:
+Swagger file: http://localhost:3000/api-docs/index.html
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+I could have added
+- pagination
+- more routes
+- interactors (tho I am still not convinced with it)
